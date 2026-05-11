@@ -148,7 +148,7 @@ export function BaselinePanel({ year, district, grade, studentGroup }: BaselineP
               <ReferenceLine y={statePercent} stroke="#60a5fa" strokeDasharray="4 4" label={{ value: "State Avg", fill: "#60a5fa", fontSize: 10 }} />
               <Bar dataKey="value" name="STAAR RLA %" radius={[4, 4, 0, 0]}
                 fill="#f5a800"
-                label={{ position: "top", fill: "#94a3b8", fontSize: 10, formatter: (v: number) => `${v}%` }}
+                label={{ position: "top", fill: "#94a3b8", fontSize: 10, formatter: (v: unknown) => `${Number(v)}%` }}
               />
             </BarChart>
           </ResponsiveContainer>
