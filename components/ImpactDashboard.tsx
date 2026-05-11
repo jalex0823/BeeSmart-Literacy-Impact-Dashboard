@@ -5,6 +5,7 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
   ResponsiveContainer, LineChart, Line, ReferenceLine, Legend,
 } from "recharts";
+import { RefreshCw } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardSubtitle } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import {
@@ -47,7 +48,12 @@ export function ImpactDashboard({ onSaveScenario }: ImpactDashboardProps) {
   const [customImprove, setCustomImprove] = useState(6.5);
   const [useCustom, setUseCustom] = useState(false);
   const [savedMsg, setSavedMsg]   = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
   const idRef = useRef(0);
+
+  const handleRefresh = () => {
+    setRefreshKey((prev) => prev + 1);
+  };
 
   const districtEntry = districtData.find((d) => d.district === district && d.year === year);
 
@@ -315,6 +321,15 @@ export function ImpactDashboard({ onSaveScenario }: ImpactDashboardProps) {
           ))}
         </select>
         <DemographicsDropdown selected={selectedGroups} onChange={setSelectedGroups} />
+        
+        <button 
+          onClick={handleRefresh}
+          className="ml-auto flex items-center gap-2 bg-amber-500/10 border border-amber-500/20 text-amber-400 px-3 py-1.5 rounded-lg hover:bg-amber-500/20 transition-all text-xs font-semibold"
+          title="Refresh Dashboard"
+        >
+          <RefreshCw size={14} className={refreshKey > 0 ? "animate-spin-once" : ""} />
+          <span>Refresh</span>
+        </button>
       </div>
 
       {/* Top KPI Cards */}
@@ -478,7 +493,7 @@ export function ImpactDashboard({ onSaveScenario }: ImpactDashboardProps) {
             <CardTitle>Before vs. After Projection</CardTitle>
             <CardSubtitle>Literacy proficiency % comparison</CardSubtitle>
           </CardHeader>
-          <ResponsiveContainer width="100%" height={280}>
+          <ResponsiveContainer width="100%" height={280} key={`before-after-${refreshKey}`}>
             <BarChart data={beforeAfterData} margin={{ top: 20, right: 20, left: -10, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
               <XAxis dataKey="name" tick={{ fill: "#94a3b8", fontSize: 12 }} />
@@ -535,7 +550,7 @@ export function ImpactDashboard({ onSaveScenario }: ImpactDashboardProps) {
             <CardTitle>Literacy % by Grade Level</CardTitle>
             <CardSubtitle>STAAR RLA proficiency vs. Texas state average by grade · {district}</CardSubtitle>
           </CardHeader>
-          <ResponsiveContainer width="100%" height={240}>
+          <ResponsiveContainer width="100%" height={240} key={`grade-level-${refreshKey}`}>
             <LineChart data={gradeChartDataWithProjection} margin={{ top: 10, right: 20, left: -10, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
               <XAxis dataKey="grade" tick={{ fill: "#94a3b8", fontSize: 11 }} />
@@ -560,7 +575,7 @@ export function ImpactDashboard({ onSaveScenario }: ImpactDashboardProps) {
             <CardSubtitle>STAAR RLA % by demographic · {district} · {year}</CardSubtitle>
           </CardHeader>
           {groupChartData.length > 0 ? (
-            <ResponsiveContainer width="100%" height={Math.max(260, groupChartData.length * 52)}>
+            <ResponsiveContainer width="100%" height={Math.max(260, groupChartData.length * 52)} key={`group-chart-${refreshKey}`}>
               <BarChart data={groupChartData} layout="vertical" barCategoryGap="20%" barGap={3}
                 margin={{ top: 5, right: 52, left: 10, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" horizontal={false} />
