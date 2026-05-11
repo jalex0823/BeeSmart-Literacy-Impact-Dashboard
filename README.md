@@ -1,4 +1,6 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BeeSmart Literacy Impact Dashboard
+
+An interactive data dashboard for analyzing STAAR RLA literacy outcomes across Texas districts and campuses. Built with Next.js, Recharts, and TailwindCSS.
 
 ## Getting Started
 
